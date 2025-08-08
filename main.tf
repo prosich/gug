@@ -29,7 +29,7 @@ provider "google" {
 #   - tipo "e2-micro"
 #   - limitado a ciertas zonas, como "us-west1-c"
 #   - disco max. 30GB de tipo "pd-standard"
-# Creamos un usuario llamado "suser" y se le añade la clave publica SSH local.
+# Creamos un usuario llamado "suser" y le añadimos la clave publica SSH local.
 
 resource "google_compute_instance" "vmgratis" {
   name = "gug"
@@ -37,9 +37,9 @@ resource "google_compute_instance" "vmgratis" {
   zone = "us-west1-c"
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
-      type = "pd-standard"
-      size = 20
+      image = "ubuntu-os-cloud/ubuntu-2404-lts-amd64"
+      type  = "pd-standard"
+      size  = 20
     }
   }
   network_interface {
