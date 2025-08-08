@@ -1,0 +1,27 @@
+* Por web, crear un proyecto en Google Cloud Console llamado "prgratis-paco"
+
+  Nos guia para configurar una cuenta de facturación con tarjeta de credito
+  que quede asociada al proyecto (creo)
+
+* En un Ubuntu (WSL, por ejemplo):
+
+  Debemos tener clave publica de usuario en ~/.ssh/id_rsa* para poder 
+  inyectarla luego en la VM que crearemos.
+
+  Hacer esto:
+ 
+    sudo apt-get install -y apt-transport-https ca-certificates gnupg
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" \
+      | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg \
+      | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg \
+      | add -
+    sudo apt-get update && sudo apt-get install -y google-cloud-cli
+
+    gcloud auth application-default login
+
+    gcloud auth application-default login --no-launch-browser
+    gcloud services enable compute.googleapis.com --project="prgratis-paco"
+
+    terraform apply #(se aplica el fichero main.tf)
+
