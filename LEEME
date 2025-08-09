@@ -32,3 +32,7 @@
 
     terraform apply # aplica main.tf en este directorio
 
+  # Aplicar ansible:
+  # (ojo si control desde ubuntu 22, version de ansible apt es antigua, instalar ansible con pip.)
+  cd ansible; ansible-playbook -i hosts gug.pb
+  
