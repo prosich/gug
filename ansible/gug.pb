@@ -7,6 +7,12 @@
   vars:
     ansible_user: suser
 
+  handlers:
+    - name: Reinicia_ssh
+      service:
+        name: ssh
+        state: restarted
+
   tasks:
     - name: update 
       apt:
@@ -27,6 +33,7 @@
         key: '{{ item }}'
       with_file:
         - peque.pub
+        - hp.pub
 
     - name: Habilitar y arrancar servicios
       systemd:
@@ -60,14 +67,13 @@
       community.general.ufw:
         state: enabled    
 
-    #- name: Borrar confs que impiden PasswordAuthentication
-    #  ansible.builtin.file:
-    #    path: "{{ item }}" 
-    #    state: absent
-    #  loop:
-    #    - /etc/ssh/sshd_config.d/50-cloud-init.conf
-    #    - /etc/ssh/sshd_config.d/60-cloudimg-settings.conf
-    #  notify: Reinicia_sshd
+    - name: Borrar confs que impiden PasswordAuthentication
+      ansible.builtin.file:
+        path: "{{ item }}" 
+        state: absent
+      loop:
+        - /etc/ssh/sshd_config.d/60-cloudimg-settings.conf
+      notify: Reinicia_ssh
 
     - name: permitir PasswordAuthentication
       lineinfile:
@@ -75,12 +81,6 @@
         regexp: '^PasswordAuthentication'
         line: 'PasswordAuthentication yes'
       notify: Reinicia_sshd
-
-  handlers:
-    - name: Reinicia_ssh
-      service:
-        name: ssh
-        state: restarted
 
   roles:
     - name: swap1g
