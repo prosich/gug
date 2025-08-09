@@ -1,0 +1,8 @@
+# Los directorios del rol "swap1g" se han creado inicialmente asi:
+
+mkdir roles
+cd roles
+ansible-galaxy init swap1g
+
+# y despues de eso se ha preparado task/main.yml
+

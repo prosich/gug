@@ -1,0 +1,2 @@
+[u24]
+gug ansible_host=gug.rosich.es ansible_user=suser ansible_python_interpreter=/usr/bin/python3

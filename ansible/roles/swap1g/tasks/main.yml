@@ -1,0 +1,40 @@
+- name: Crear fichero swap (si no existe)
+  # Usamos 'command' con 'creates' para idempotencia.
+  ansible.builtin.command: "fallocate -l 1G /swapfile"
+  args:
+    creates: "/swapfile"
+  changed_when: false 
+
+- name: Establecer permisos correctos para el fichero swap
+  ansible.builtin.file:
+    path: "/swapfile"
+    mode: '0600' 
+    state: file 
+
+- name: Verificar si el fichero ya está formateado como swap
+  ansible.builtin.command: "blkid -p -o value -s TYPE /swapfile"
+  register: swap_signature_check
+  failed_when: false  # nunca fallo
+  changed_when: false # no cambio nada
+
+- name: Formatear el fichero como swap (si es necesario)
+  ansible.builtin.command: "mkswap /swapfile"
+  when: "'swap' not in swap_signature_check.stdout" 
+  changed_when: true 
+
+- name: Obtener lista de swaps activos
+  ansible.builtin.command: swapon --show=NAME --noheadings 
+  register: active_swap_names
+  changed_when: false
+  failed_when: false 
+
+- name: Activar swap file si no esta en la lista de activos
+  ansible.builtin.command: swapon /swapfile
+  when: "'/swapfile' not in active_swap_names.stdout_lines"
+
+- name: Ensure swap file is enabled on boot
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    line: '/swapfile swap swap defaults 0 0'
+    state: present
+
