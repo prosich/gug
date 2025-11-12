@@ -34,6 +34,7 @@
       with_file:
         - peque.pub
         - hp.pub
+        - prv.pub
 
     - name: Habilitar y arrancar servicios
       systemd:

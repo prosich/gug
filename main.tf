@@ -14,7 +14,7 @@ terraform {
 # Indicar ID de proyecto Google Cloud.
 # ============================================================================
 # Previamente se debe haber hecho:
-# - Crear proyecto-gratis-de-paco en GC console GUI.
+# - Crear proyecto prgratis-paco en GC console GUI.
 # - Desde shell:
 #   gcloud services enable compute.googleapis.com --project="prgratis-paco"
 
